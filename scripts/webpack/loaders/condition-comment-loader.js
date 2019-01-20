@@ -29,7 +29,7 @@ module.exports = function ConditionCommentLoader (source, map) {
             return newLine;
         });
 
-        result = result.replace(/<!--\s+#only dev start\s+-->([\S\s]*?)<!--\s+#only dev end\s+-->/g, (a, b) => {
+        result = result.replace(/<!--\s+#only dev start\s+-->([\S\s]*?)<!--\s+#only dev end\s+-->/g, () => {
             return '';
         });
     }
