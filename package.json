@@ -1,0 +1,60 @@
+{
+  "name": "vue-ssr-starter",
+  "version": "1.0.0",
+  "description": "vue-ssr-starter",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node scripts/webpack-hot-update-config.js",
+    "dev:server": "node scripts/server-dev.js",
+    "build": "node scripts/webpack-hot-update-config.js build",
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yicheng-irun/vue-ssr-starter.git"
+  },
+  "authors": "icheng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yicheng-irun/vue-ssr-starter/issues"
+  },
+  "homepage": "https://github.com/yicheng-irun/vue-ssr-starter#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/runtime": "^7.2.0",
+    "@fortawesome/fontawesome-free": "^5.6.3",
+    "autoprefixer": "^9.4.3",
+    "axios": "^0.18.0",
+    "babel-loader": "^8.0.4",
+    "css-hot-loader": "^1.4.3",
+    "css-loader": "^2.0.1",
+    "cssnano": "^4.1.8",
+    "eslint": "^5.9.0",
+    "eslint-plugin-html": "^5.0.0",
+    "eslint-plugin-vue": "^5.1.0",
+    "file-loader": "^3.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "loader-utils": "^1.2.3",
+    "nodemon": "^1.18.9",
+    "postcss-loader": "^3.0.0",
+    "style-loader": "^0.23.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "url-loader": "^1.1.2",
+    "vue": "^2.5.21",
+    "vue-beauty": "^2.0.0-beta.19",
+    "vue-loader": "^15.4.2",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.5.21",
+    "webpack": "^4.27.1",
+    "webpack-dev-server": "^3.1.10"
+  }
+}
