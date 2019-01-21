@@ -7,17 +7,16 @@ const webpackMerge = require('webpack-merge');
 const WebpackDevServer = require('webpack-dev-server');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const baseConfig = require('./webpack-base-config.js');
+const webpackBaseConfig = require('./webpack-base-config.js');
 
 const utils = require('../utils');
 const { srcRoot, distRoot, devServerPort, devNodeServerPort } = utils.configs;
 
 
-const isProd = process.argv.indexOf('build') >= 0;
+const isProd = process.env.NODE_ENV == 'production';
 
 
 const entries = {};
-// const chunks = [];
 const htmlWebpackPluginArray = [];
 
 const staticPages = utils.getAllStaticPages();
@@ -28,7 +27,6 @@ staticPages.forEach((chunk) => {
     //     }
     // }
     entries[chunk] = `${srcRoot}/pages/${chunk}/index.js`;
-    // chunks.push(chunk);
     const filename = `${chunk}.html`;
     const htmlConf = {
         filename,
@@ -41,15 +39,9 @@ staticPages.forEach((chunk) => {
 
 const ssrPages = utils.getAllSSRPages();
 ssrPages.forEach((chunk) => {
-    // if (isProd) {
-    //     if (chunk.startsWith('index') || chunk.startsWith('test')) {
-    //         return;
-    //     }
-    // }
     const key = `ssr/${chunk}`;
 
     entries[key] = `${srcRoot}/pages-ssr/${chunk}/entry-client.js`;
-    // chunks.push(chunk);
     const filename = `ssr/${chunk}.html`;
     const htmlConf = {
         filename,
@@ -61,7 +53,7 @@ ssrPages.forEach((chunk) => {
 });
 
 
-const config = webpackMerge(baseConfig.getConfig(), {
+const config = webpackMerge(webpackBaseConfig.getConfig(), {
     entry: entries,
     output: {
         path: distRoot,

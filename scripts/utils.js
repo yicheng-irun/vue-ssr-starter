@@ -21,6 +21,12 @@ function getAllSSRPages () {
     return pages;
 }
 
+
+function webpackLog () {
+    
+}
+
+
 module.exports = {
     configs,
     getAllStaticPages,
