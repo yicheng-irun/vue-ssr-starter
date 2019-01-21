@@ -3,7 +3,9 @@ const path = require('path');
 const webpackMerge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack-base-config.js');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const utils = require('../utils');
 const { srcRoot, distRoot, devServerPort, devNodeServerPort } = utils.configs;
 
 const isProd = process.env.NODE_ENV == 'production';
@@ -25,18 +27,23 @@ function getConfig (chunk) {
                 filename: 'vue-ssr-client-manifest.json'
             }),
             new HtmlWebpackPlugin({
-                filename: path.join(distStaticPath, `${page}.html`),
+                filename: `${chunk}.html`,
                 template: path.join(srcRoot, `pages-ssr/${chunk}/index.html`),
+                chunks: [chunk],
+                
                 inject: false,
-                minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,
-                hash: false,
+                // minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,
+
+                isProd: isProd,
+                isDev: !isProd,
+                isServer: false,
+                isClient: true,
             }),
         ],
     });
 
+    return config;
 }
 
 
-module.exports = {
-    getConfig,
-};
+module.exports = getConfig;

@@ -94,6 +94,12 @@ function getConfig () {
                     }
                 },
                 {
+                    test: /\.html$/,
+                    loader: "art-template-loader",
+                    options: {
+                    }
+                },
+                {
                     test: /\.js$/,
                     use: 'babel-loader',
                     exclude: /node_modules/,

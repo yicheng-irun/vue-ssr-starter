@@ -10,6 +10,6 @@ if (isProd) {
 }
 
 // require('./webpack/webpack-hot-update-build.js');
-require('./webpack/webpack-base-config.js');
+require('./webpack/webpack-ssr-build.js');
 
 
