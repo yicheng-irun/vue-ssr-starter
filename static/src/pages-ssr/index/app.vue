@@ -1,12 +1,8 @@
 <template>
     <div id="app">
-
         <h1>这是页面的template1111111111</h1>
-
         <hr>
-
         <h3>我是msg: {{ state.msg }}</h3>
-
     </div>
 </template>
 

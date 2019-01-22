@@ -5,11 +5,14 @@ module.exports = {
         "es6": true,
         "node": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:vue/recommended"
+    ],
     "parserOptions": {
-        "ecmaVersion": 2017,
         "sourceType": "module"
     },
+    plugins: [],
     "rules": {
         "indent": [
             "error",
@@ -28,5 +31,9 @@ module.exports = {
             "always"
         ],
         "no-console": [0],
+        "vue/html-indent": [
+            'error',
+            4
+        ]
     }
 };
