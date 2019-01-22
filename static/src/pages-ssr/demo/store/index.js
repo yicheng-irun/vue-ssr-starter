@@ -52,6 +52,6 @@ export default function createStore () {
             }
             return store.dispatch('fetchItem'); // 拉取数据
         },
-        storeInstance: store,
+        instance: store,
     };
 }

@@ -7,10 +7,12 @@
     <title></title>
 </head>
 <body>
+    {{ block body }}
     {{if htmlWebpackPlugin.options.isServer }}
     <!--vue-ssr-outlet-->
     {{else}}
     <div id="app"></div>
     {{/if}}
+    {{/block}}
 </body>
 </html>

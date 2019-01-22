@@ -18,20 +18,22 @@ function getConfig (chunk) {
             app: path.join(srcRoot, `pages-ssr/${chunk}/entry-client.js`),
         },
         output: {
-            path: path.join(distRoot, chunk),
-            filename: '[name].js',
+            path: distRoot,
+            filename: `assets-ssr/${chunk}/[name].js`,
             publicPath: '/'
         },
         plugins: [
             new VueSSRClientPlugin({
-                filename: 'vue-ssr-client-manifest.json'
+                filename: path.relative(distRoot,
+                    path.resolve(distRoot, `../dist-ssr-bundle/${chunk}/vue-ssr-client-manifest.json`),
+                )
             }),
             new HtmlWebpackPlugin({
-                filename: `${chunk}.html`,
+                filename: `assets-ssr/${chunk}.html`,
                 template: path.join(srcRoot, `pages-ssr/${chunk}/index.html`),
-                chunks: [chunk],
+                chunks: ['app'],
                 
-                inject: false,
+                // inject: false,
                 // minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,
 
                 isProd: isProd,
@@ -40,6 +42,7 @@ function getConfig (chunk) {
                 isClient: true,
             }),
         ],
+        watch: !isProd,
     });
 
     return config;
