@@ -15,23 +15,24 @@ function getConfig (chunk) {
 
     const config = webpackMerge(webpackBaseConfig.getConfig(), {
         entry: {
-            app: path.join(srcRoot, `pages-ssr/${chunk}/entry-client.js`),
+            [chunk]: `${srcRoot}/pages/${chunk}/entry-client.js`,
         },
         output: {
             path: distRoot,
-            filename: `assets-ssr/${chunk}/[name].js`,
+            filename:'assets/[name].js',
             publicPath: '/'
         },
         plugins: [
             new VueSSRClientPlugin({
-                filename: path.relative(distRoot,
-                    path.resolve(distRoot, `../dist-ssr-bundle/${chunk}/vue-ssr-client-manifest.json`),
+                filename: path.relative(
+                    distRoot,
+                    path.resolve(distRoot, `../dist-bundle/${chunk}/vue-ssr-client-manifest.json`),
                 )
             }),
             new HtmlWebpackPlugin({
-                filename: `assets-ssr/${chunk}.html`,
-                template: path.join(srcRoot, `pages-ssr/${chunk}/index.html`),
-                chunks: ['app'],
+                filename: `${chunk}.html`,
+                template: path.join(srcRoot, `pages/${chunk}/index.html`),
+                chunks: [chunk],
                 
                 // inject: false,
                 // minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,

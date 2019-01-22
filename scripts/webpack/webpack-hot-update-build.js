@@ -26,7 +26,7 @@ staticPages.forEach((chunk) => {
     //         return;
     //     }
     // }
-    entries[chunk] = `${srcRoot}/pages/${chunk}/index.js`;
+    entries[chunk] = `${srcRoot}/pages/${chunk}/entry-client.js`;
     const filename = `${chunk}.html`;
     const htmlConf = {
         filename,
@@ -37,20 +37,20 @@ staticPages.forEach((chunk) => {
     htmlWebpackPluginArray.push(new HtmlWebpackPlugin(htmlConf));
 });
 
-const ssrPages = utils.getAllSSRPages();
-ssrPages.forEach((chunk) => {
-    const key = `ssr/${chunk}`;
+// const ssrPages = utils.getAllSSRPages();
+// ssrPages.forEach((chunk) => {
+//     const key = `ssr/${chunk}`;
 
-    entries[key] = `${srcRoot}/pages-ssr/${chunk}/entry-client.js`;
-    const filename = `ssr/${chunk}.html`;
-    const htmlConf = {
-        filename,
-        template: `${srcRoot}/pages-ssr/${chunk}/index.html`,
-        chunks: ['commons', key],
-        isProd: isProd,
-    };
-    htmlWebpackPluginArray.push(new HtmlWebpackPlugin(htmlConf));
-});
+//     entries[key] = `${srcRoot}/pages-ssr/${chunk}/entry-client.js`;
+//     const filename = `ssr/${chunk}.html`;
+//     const htmlConf = {
+//         filename,
+//         template: `${srcRoot}/pages-ssr/${chunk}/index.html`,
+//         chunks: ['commons', key],
+//         isProd: isProd,
+//     };
+//     htmlWebpackPluginArray.push(new HtmlWebpackPlugin(htmlConf));
+// });
 
 
 const config = webpackMerge(webpackBaseConfig.getConfig(), {

@@ -8,8 +8,8 @@ const isProd = process.env.NODE_ENV == 'production';
 
 const configs = [];
 
-const ssrPages = utils.getAllSSRPages();
-ssrPages.forEach((chunk) => {
+const pages = utils.getAllStaticPages();
+pages.forEach((chunk) => {
 
     configs.push(createClientConfig(chunk));
     // configs.push(createServerConfig({isProd, page: item}));
