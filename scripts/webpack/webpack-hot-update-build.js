@@ -32,7 +32,11 @@ staticPages.forEach((chunk) => {
         filename,
         template: `${srcRoot}/pages/${chunk}/index.html`,
         chunks: ['commons', chunk],
+
         isProd: isProd,
+        isDev: !isProd,
+        isServer: false,
+        isClient: true,
     };
     htmlWebpackPluginArray.push(new HtmlWebpackPlugin(htmlConf));
 });
@@ -75,33 +79,7 @@ config.plugins = [
 
 if (isProd) {
     delete config.devServer;
-    webpack(config, (err, stats) => {
-        if (err) throw err;
-        // production 模式下显示详细构建结果
-        console.log(stats.toString({
-            assets: true,
-            version: false,
-            hash: false,
-            colors: true,
-            children: true,
-            entrypoints: false,
-            modules: false,
-            chunks: false,
-            chunkModules: false,
-            timings: true,
-        }));
-        // 显示 errors 和 warnings
-        if (stats.hasErrors()) {
-            stats.toJson().errors.forEach((e) => {
-                console.error(e);
-            });
-        }
-        if (stats.hasWarnings()) {
-            stats.toJson().warnings.forEach((w) => {
-                console.warn(w);
-            });
-        }
-    });
+    webpack(config, utils.printInfo);
 } else {
     const devServerOptions = {
         host: '0.0.0.0',

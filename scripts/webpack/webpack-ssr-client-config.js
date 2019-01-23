@@ -6,7 +6,7 @@ const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const utils = require('../utils');
-const { srcRoot, distRoot, devServerPort, devNodeServerPort } = utils.configs;
+const { srcRoot, distRoot, distBundleRoot } = utils.configs;
 
 const isProd = process.env.NODE_ENV == 'production';
 
@@ -26,7 +26,7 @@ function getConfig (chunk) {
             new VueSSRClientPlugin({
                 filename: path.relative(
                     distRoot,
-                    path.resolve(distRoot, `../dist-bundle/${chunk}/vue-ssr-client-manifest.json`),
+                    path.resolve(distBundleRoot, `./${chunk}/vue-ssr-client-manifest.json`),
                 )
             }),
             new HtmlWebpackPlugin({
