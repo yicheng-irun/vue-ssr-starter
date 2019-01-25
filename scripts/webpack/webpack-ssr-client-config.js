@@ -31,11 +31,11 @@ function getConfig (chunk) {
             }),
             new HtmlWebpackPlugin({
                 filename: `${chunk}.html`,
-                template: path.join(srcRoot, `pages/${chunk}/index.html`),
+                template: `${srcRoot}/pages/${chunk}/index.html`,
                 chunks: [chunk],
                 
                 // inject: false,
-                // minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,
+                minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,
 
                 isProd: isProd,
                 isDev: !isProd,

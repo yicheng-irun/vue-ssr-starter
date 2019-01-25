@@ -95,7 +95,7 @@ function getConfig () {
                 },
                 {
                     test: /\.html$/,
-                    loader: "art-template-loader",
+                    loader: 'twig-loader',
                     options: {
                     }
                 },

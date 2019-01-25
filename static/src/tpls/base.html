@@ -5,14 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="format-detection" content="telephone=no,email=no">
     <title></title>
+    {% block head %}{% endblock %}
 </head>
 <body>
-    {{ block body }}
-    {{if htmlWebpackPlugin.options.isServer }}
+    {% block body %}
+    {% if htmlWebpackPlugin.options.isServer %}
     <!--vue-ssr-outlet-->
-    {{else}}
+    {% else %}
     <div id="app"></div>
-    {{/if}}
-    {{/block}}
+    {% endif %}
+    {% endblock %}
 </body>
 </html>
