@@ -12,7 +12,7 @@ const isProd = process.env.NODE_ENV == 'production';
 
 function getConfig (chunk) {
 
-    const config = webpackMerge(webpackBaseConfig.getConfig(), {
+    const config = webpackMerge(webpackBaseConfig.getConfig('Server ' + chunk), {
         entry: {
             [chunk]: `${srcRoot}/pages/${chunk}/entry-server.js`,
         },

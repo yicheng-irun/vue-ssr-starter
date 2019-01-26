@@ -7,7 +7,7 @@ if (isProd) {
     require('./webpack/webpack-ssr-build.js');
 } else {
     process.env.NODE_ENV = 'development';
-    // require('./webpack/webpack-hot-update-build.js');
+    require('./webpack/webpack-hot-update-build.js');
     require('./webpack/webpack-ssr-build.js');
 }
 

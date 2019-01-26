@@ -1,6 +1,7 @@
 
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
+const webpack = require('webpack');
 const utils = require('../utils');
 
 const { srcRoot } = utils.configs;
@@ -62,7 +63,7 @@ const VueStyleLoader = () => {
 
 
 
-function getConfig () {
+function getConfig (chunks) {
 
     const config = {
         mode: isProd ? 'production' : 'development',
@@ -91,7 +92,8 @@ function getConfig () {
                     loader: path.resolve(__dirname, './loaders/condition-comment-loader.js'),
                     options: {
                         isProd: isProd
-                    }
+                    },
+                    exclude: /node_modules/,
                 },
                 {
                     test: /\.html$/,
@@ -129,6 +131,14 @@ function getConfig () {
         },
         plugins: [
             new VueLoaderPlugin(),
+            new webpack.ProgressPlugin((percentage) => {
+                // console.info(percentage, message, ...args);
+                // const percent = Math.floor(percentage * 1000) / 10;
+                // console.info(`${chunks} ${percent}% ${message}`);
+                if (percentage == 1) {
+                    console.info(`${chunks} 构建就绪`);
+                }
+            }),
         ],
     };
 

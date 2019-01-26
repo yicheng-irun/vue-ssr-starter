@@ -57,7 +57,7 @@ staticPages.forEach((chunk) => {
 // });
 
 
-const config = webpackMerge(webpackBaseConfig.getConfig(), {
+const config = webpackMerge(webpackBaseConfig.getConfig('Hot Update Build'), {
     entry: entries,
     output: {
         path: distRoot,
