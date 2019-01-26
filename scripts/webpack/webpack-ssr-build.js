@@ -10,12 +10,15 @@ const configs = [];
 
 const pages = utils.getAllStaticPages();
 pages.forEach((chunk) => {
-
     configs.push(createClientConfig(chunk));
     configs.push(createServerConfig(chunk));
 });
 
-
+const startTime = Date.now();
 webpack(configs, (err, stats) => {
     utils.printInfo(err, stats, isProd);
+    if (isProd) {
+        const endTime = Date.now();
+        console.log('构建时间', endTime - startTime);
+    }
 });

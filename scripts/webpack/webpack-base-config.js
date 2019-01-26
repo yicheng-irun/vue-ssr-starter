@@ -103,6 +103,7 @@ function getConfig (chunks) {
                 },
                 {
                     test: /\.js$/,
+                    // use: ['cache-loader', 'babel-loader'],
                     use: 'babel-loader',
                     exclude: /node_modules/,
                 },
