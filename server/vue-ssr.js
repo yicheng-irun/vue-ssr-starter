@@ -33,10 +33,14 @@ function getRouter (options) {
             template, // （可选）页面模板
             // clientManifest // （可选）客户端构建 manifest
         });
+
+        if (options.cacheRenderer) {
+            cachedRenderers[pagePath] = renderer;
+        }
         
-        cachedRenderers[pagePath] = renderer;
         return renderer;
     }
+
 
 
 
@@ -44,11 +48,14 @@ function getRouter (options) {
         /**
          * 绑定一个ssrRender的函数到response对象上
          */
+        const serverOrigin = `http://127.0.0.1:${options.app.get('port')}`;
+
         res.ssrRender = function (pagePath, params) {
             const renderer = getRenderer(pagePath);
             const context = {
                 req,
-                params
+                params,
+                serverOrigin,
             };
             renderer.renderToString(context, (err, html) => {
                 if (err) {

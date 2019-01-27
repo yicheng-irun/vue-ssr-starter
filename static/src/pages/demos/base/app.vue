@@ -1,8 +1,7 @@
 <template>
     <div id="app">
-        <h1>这是页面的template1111111111</h1>
-        <hr>
-        <h3>我是msg: {{ state.msg }}</h3>
+        <h1 class="title">A Vue SSR Demo</h1>
+        <p class="content">ajax result: {{ state.data }}</p>
     </div>
 </template>
 
@@ -32,11 +31,16 @@ export default {
 
 <style lang="stylus">
 @import './app.styl';
-h1 {
+
+h1.title {
+    margin 100px 0 50px 0;
     color: rgba(0, 0, 0, 0.5);
+    text-align center;
+    font-size 50px;
 }
 
-h3 {
-    color: #f00;
+p.content {
+    margin 20px;
 }
+
 </style>

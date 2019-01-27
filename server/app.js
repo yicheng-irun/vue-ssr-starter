@@ -27,7 +27,9 @@ app.use('/api', require('./api/index').router);
 
 // 加上ssr的中间件
 app.use(require('./vue-ssr.js')({
-    bundlePath: path.resolve(__dirname, '../static/dist-bundle')
+    bundlePath: path.resolve(__dirname, '../static/dist-bundle'),
+    cacheRenderer: process.env.NODE_ENV == 'development' ? false : true,
+    app: app,
 }));
 
 // 以api来起调用接口

@@ -7,12 +7,14 @@ const router = express.Router();
 
 
 
-router.get('/', (req, res) => {
+router.get('/demo', (req, res) => {
     res.json({
         success: true,
         msg: 'success',
         data: {
-            hello: 'world!'
+            hello: 'world!',
+            time: new Date().toLocaleString(),
+            query: req.query
         }
     });
 });

@@ -2,8 +2,11 @@
  * 服务端js的入口文件
  */
 import createApp from './create-app';
+import runtime from '@/lib/runtime';
 
 export default (context) => {
+    runtime.setServerContext(context);
+
     const { app, store } = createApp(context);
 
     return new Promise((resolve, reject) => {
