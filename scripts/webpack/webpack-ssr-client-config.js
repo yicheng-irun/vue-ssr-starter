@@ -13,7 +13,7 @@ const isProd = process.env.NODE_ENV == 'production';
 
 function getConfig (chunk) {
 
-    const config = webpackMerge(webpackBaseConfig.getConfig('Client ' + chunk), {
+    const config = webpackMerge(webpackBaseConfig.getSSRConfig('Client ' + chunk), {
         entry: {
             [chunk]: `${srcRoot}/pages/${chunk}/entry-client.js`,
         },

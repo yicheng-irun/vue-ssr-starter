@@ -37,7 +37,7 @@ function getRenderer (pagePath) {
 
 function middleWare (req, res, next) {
     /**
-     * 
+     * 绑定一个ssrRender的函数到response对象上
      */
     res.ssrRender = function (pagePath, params) {
         const renderer = getRenderer(pagePath);

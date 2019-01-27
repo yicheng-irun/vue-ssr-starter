@@ -2,6 +2,7 @@
 const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const utils = require('../utils');
 
 const { srcRoot } = utils.configs;
@@ -63,7 +64,16 @@ const VueStyleLoader = () => {
 
 
 
-function getConfig (chunks) {
+function getConfig (chunks, options) {
+    const opts = options || {};
+
+    const baseCssLoader = [];
+    if (!isProd) {
+        baseCssLoader.push('css-hot-loader');
+    }
+    if (opts.extractCssLoader) {
+        baseCssLoader.push(MiniCssExtractPlugin.loader);
+    }
 
     const config = {
         mode: isProd ? 'production' : 'development',
@@ -99,7 +109,6 @@ function getConfig (chunks) {
                     test: /\.html$/,
                     loader: 'twig-loader',
                     options: {
-                        path: srcRoot,
                     }
                 },
                 {
@@ -110,11 +119,11 @@ function getConfig (chunks) {
                 },
                 {
                     test: /\.css$/,
-                    use: (isProd ? [] : ['css-hot-loader']).concat([VueStyleLoader(), StyleLoader(), CSSLoader(), PostCSSLoader()]),
+                    use: (isProd ? [] : ['css-hot-loader']).concat([VueStyleLoader(), CSSLoader(), PostCSSLoader()]),
                 },
                 {
                     test: /\.(stylus|styl)$/,
-                    use: (isProd ? [] : ['css-hot-loader']).concat([VueStyleLoader(), StyleLoader(), CSSLoader(), PostCSSLoader(), StylusLoader()]),
+                    use: (isProd ? [] : ['css-hot-loader']).concat([VueStyleLoader(), CSSLoader(), PostCSSLoader(), StylusLoader()]),
                 },
                 {
                     test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
@@ -148,6 +157,20 @@ function getConfig (chunks) {
 }
 
 
+function getSSRConfig (chunks) {
+    const config = getConfig(chunks, {
+        extractCssLoader: true,
+    });
+
+    config.plugins.push(new MiniCssExtractPlugin({
+        filename: '[name].css',
+        chunkFilename: '[id].css',
+    }));
+
+    return config;
+}
+
 module.exports = {
     getConfig,
+    getSSRConfig,
 };
