@@ -27,7 +27,7 @@ function getConfig (chunk) {
                 filename: 'vue-ssr-server-bundle.json'
             }),
             new HtmlWebpackPlugin({
-                filename: `${chunk}.html`,
+                filename: 'template.html',
                 template: path.join(srcRoot, `pages/${chunk}/index.html`),
                 // chunks: [chunk],
                 

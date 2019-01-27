@@ -30,7 +30,8 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
+<style lang="stylus">
+@import './app.styl';
 h1 {
     color: rgba(0, 0, 0, 0.5);
 }

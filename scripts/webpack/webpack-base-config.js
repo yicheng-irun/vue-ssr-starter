@@ -99,6 +99,7 @@ function getConfig (chunks) {
                     test: /\.html$/,
                     loader: 'twig-loader',
                     options: {
+                        path: srcRoot,
                     }
                 },
                 {

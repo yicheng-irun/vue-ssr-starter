@@ -8,7 +8,7 @@ export default (context) => {
 
     return new Promise((resolve, reject) => {
         store.serverFetch().then(() => {
-            context.state = store.storeInstance.state; // 这一步将会把状态序列化到 `window.__INITIAL_STATE__`
+            context.state = store.instance.state; // 这一步将会把状态序列化到 `window.__INITIAL_STATE__`
             resolve(app);
         }).catch(reject);
     });
