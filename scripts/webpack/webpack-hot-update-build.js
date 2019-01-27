@@ -79,7 +79,7 @@ config.plugins = [
 
 if (isProd) {
     delete config.devServer;
-    webpack(config, utils.printInfo);
+    webpack(config, require('./print'));
 } else {
     const devServerOptions = {
         host: '0.0.0.0',

@@ -1,15 +1,23 @@
 const path = require('path');
 const glob = require('glob');
 
+let buildSettings = {};
+try {
+    buildSettings = require(path.join(process.cwd(), 'build-settings.js'));
+} catch (e) {
+    //
+}
+
+const projRoot = buildSettings.projRoot || process.cwd();
 
 const configs = {
-    projRoot: path.resolve(__dirname, '../'),
-    distRoot: path.resolve(__dirname, '../static/dist'),
-    distBundleRoot: path.resolve(__dirname, '../static/dist-bundle'),
-    srcRoot: path.resolve(__dirname, '../static/src'),
+    projRoot,
+    distRoot: buildSettings.distRoot || path.resolve(projRoot, './static/dist'),
+    distBundleRoot: buildSettings.distBundleRoot || path.resolve(projRoot, './static/dist-bundle'),
+    srcRoot: buildSettings.srcRoot || path.resolve(projRoot, './static/src'),
 
-    devServerPort: 10000, // 在开发模式下，http 静态资源服务监听的端口
-    devNodeServerPort: 10001, // 在开发模式下，后台监听的端口
+    devServerPort: buildSettings.devServerPort || 10000, // 在开发模式下，http 静态资源服务监听的端口
+    devNodeServerPort: buildSettings.devNodeServerPort || 10001, // 在开发模式下，后台监听的端口
 };
 
 function getAllStaticPages () {
@@ -22,39 +30,8 @@ function getAllSSRPages () {
     return pages;
 }
 
-function printInfo (err, stats, isProd) {
-    if (err) throw err;
-    // production 模式下显示详细构建结果
-    if (isProd) {
-        console.log(stats.toString({
-            assets: true,
-            version: false,
-            hash: false,
-            colors: true,
-            children: true,
-            entrypoints: false,
-            modules: false,
-            chunks: false,
-            chunkModules: false,
-            timings: true,
-        }));
-    }
-    // 显示 errors 和 warnings
-    if (stats.hasErrors()) {
-        stats.toJson().errors.forEach((e) => {
-            console.error(e);
-        });
-    }
-    if (stats.hasWarnings()) {
-        stats.toJson().warnings.forEach((w) => {
-            console.warn(w);
-        });
-    }
-}
-
 module.exports = {
     configs,
     getAllStaticPages,
     getAllSSRPages,
-    printInfo
 };

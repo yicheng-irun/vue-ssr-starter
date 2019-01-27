@@ -7,8 +7,8 @@ router.get('/', (req, res) => {
     res.send('xxxxxxxxxxx');
 });
 
-router.get('/demos/devtest', (req, res) => {
-    res.ssrRender('demos/devtest', {
+router.get('/demos/base', (req, res) => {
+    res.ssrRender('demos/base', {
         query: req.query
     });
 });

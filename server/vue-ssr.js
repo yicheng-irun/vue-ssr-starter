@@ -2,59 +2,66 @@ const fs = require('fs');
 const path = require('path');
 const vueServerRender = require('vue-server-renderer');
 
-const bundlePath = path.resolve(__dirname, '../static/dist-bundle');
 
-const cachedRenderers = {};
-
-function getRenderer (pagePath) {
-    if (cachedRenderers[pagePath]) {
-        return cachedRenderers[pagePath];
+function getRouter (options) {
+    const bundlePath = options.bundlePath;
+    if (!bundlePath) {
+        throw new Error('options.bundlePath "' + bundlePath + '" is not available');
     }
 
-    const jsonPath = path.join(bundlePath, pagePath, 'vue-ssr-server-bundle.json');
-    const templatePath = path.join(bundlePath, pagePath, 'template.html');
-    if (!fs.existsSync(jsonPath)) {
-        throw new Error(`file: '${jsonPath}' is not exists`);
-    }
-    if (!fs.existsSync(templatePath)) {
-        throw new Error(`file: '${templatePath}' is not exists`);
-    }
+    const cachedRenderers = {};
 
-    const serverBundle = JSON.parse(fs.readFileSync(jsonPath).toString());
-    const template = fs.readFileSync(templatePath).toString();
-    
-    const renderer = vueServerRender.createBundleRenderer(serverBundle, {
-        runInNewContext: false, // 推荐
-        template, // （可选）页面模板
-        // clientManifest // （可选）客户端构建 manifest
-    });
-    
-    cachedRenderers[pagePath] = renderer;
-    return renderer;
-}
+    function getRenderer (pagePath) {
+        if (cachedRenderers[pagePath]) {
+            return cachedRenderers[pagePath];
+        }
 
+        const jsonPath = path.join(bundlePath, pagePath, 'vue-ssr-server-bundle.json');
+        const templatePath = path.join(bundlePath, pagePath, 'template.html');
+        if (!fs.existsSync(jsonPath)) {
+            throw new Error(`file: '${jsonPath}' is not exists`);
+        }
+        if (!fs.existsSync(templatePath)) {
+            throw new Error(`file: '${templatePath}' is not exists`);
+        }
 
-
-function middleWare (req, res, next) {
-    /**
-     * 绑定一个ssrRender的函数到response对象上
-     */
-    res.ssrRender = function (pagePath, params) {
-        const renderer = getRenderer(pagePath);
-        const context = {
-            req,
-            params
-        };
-        renderer.renderToString(context, (err, html) => {
-            if (err) {
-                return next(err);
-            }
-            // 处理异常……
-            res.end(html);
+        const serverBundle = JSON.parse(fs.readFileSync(jsonPath).toString());
+        const template = fs.readFileSync(templatePath).toString();
+        
+        const renderer = vueServerRender.createBundleRenderer(serverBundle, {
+            runInNewContext: false, // 推荐
+            template, // （可选）页面模板
+            // clientManifest // （可选）客户端构建 manifest
         });
-    };
-    next();
+        
+        cachedRenderers[pagePath] = renderer;
+        return renderer;
+    }
+
+
+
+    function middleWare (req, res, next) {
+        /**
+         * 绑定一个ssrRender的函数到response对象上
+         */
+        res.ssrRender = function (pagePath, params) {
+            const renderer = getRenderer(pagePath);
+            const context = {
+                req,
+                params
+            };
+            renderer.renderToString(context, (err, html) => {
+                if (err) {
+                    return next(err);
+                }
+                // 处理异常……
+                res.end(html);
+            });
+        };
+        next();
+    }
+
+    return middleWare;
 }
 
-
-module.exports = middleWare;
+module.exports = getRouter;

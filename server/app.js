@@ -26,7 +26,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', require('./api/index').router);
 
 // 加上ssr的中间件
-app.use(require('./vue-ssr.js'));
+app.use(require('./vue-ssr.js')({
+    bundlePath: path.resolve(__dirname, '../static/dist-bundle')
+}));
 
 // 以api来起调用接口
 app.use(require('./router/index').router);

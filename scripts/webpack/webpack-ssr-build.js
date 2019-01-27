@@ -16,7 +16,7 @@ pages.forEach((chunk) => {
 
 const startTime = Date.now();
 webpack(configs, (err, stats) => {
-    utils.printInfo(err, stats, isProd);
+    require('./print')(err, stats, isProd);
     if (isProd) {
         const endTime = Date.now();
         console.log('构建时间', endTime - startTime);
