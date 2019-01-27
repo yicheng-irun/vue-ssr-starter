@@ -11,7 +11,9 @@ function getRouter (options) {
 
     const cachedRenderers = {};
 
-    function getRenderer (pagePath) {
+    function getRenderer (pagePathArg) {
+        const pagePath = pagePathArg.replace(/^\/+/, '');
+
         if (cachedRenderers[pagePath]) {
             return cachedRenderers[pagePath];
         }

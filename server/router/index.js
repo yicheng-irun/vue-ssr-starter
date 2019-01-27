@@ -4,7 +4,9 @@ const router = express.Router();
 // 这里加上鉴权相关的代码逻辑
 
 router.get('/', (req, res) => {
-    res.send('xxxxxxxxxxx');
+    res.ssrRender('home', {
+        query: req.query
+    });
 });
 
 router.get('/demos/base', (req, res) => {

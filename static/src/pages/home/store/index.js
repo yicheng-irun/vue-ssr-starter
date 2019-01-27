@@ -1,38 +1,35 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
 Vue.use(Vuex);
+
+import { get } from '@/lib/ajax.js';
+
 
 export default function createStore () {
     const store = new Vuex.Store({
         state: {
-            data1: {
-                key: '我是data',
+            data: {
+
+                time: '',
             },
             msg: '',
         },
 
         mutations: {
-            setItem (state, { data1, msg }) {
-                if (data1) {
-                    state.data1 = data1;
-                }
-                if (msg) {
-                    state.msg = msg;
-                }
+            setData (state, data) {
+                state.data = data;
             },
         },
 
         actions: {
             fetchItem ({ commit }) {
-                return new Promise((resolve) => {
+                return new Promise((resolve, reject) => {
                     // 这里可以请求 后台cgi 数据
-                    setTimeout(() => {
-                        commit('setItem', {
-                            msg: '我是请求数据之后设置过的msg',
-                        });
+                    get('/api/demo', { sayhi: 'hi server!' }).then((rsp) => {
+                        const result = rsp.data;
+                        commit('setData', result.data);
                         resolve();
-                    }, 200);
+                    }).catch(reject);
                 });
             },
         },
