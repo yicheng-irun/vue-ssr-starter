@@ -11,12 +11,12 @@ const isProd = process.env.NODE_ENV == 'production';
 
 
 
-const StyleLoader = () => {
-    return {
-        loader: 'style-loader',
-        options: { sourceMap: !isProd }
-    };
-};
+// const StyleLoader = () => {
+//     return {
+//         loader: 'style-loader',
+//         options: { sourceMap: !isProd }
+//     };
+// };
 
 const PostCSSLoader = () => {
     return {
@@ -64,17 +64,16 @@ const VueStyleLoader = () => {
 
 
 
-function getConfig (chunks, options) {
-    const opts = options || {};
+function getConfig (chunks) {
 
-    const baseCssLoader = [];
-    if (!isProd) {
-        baseCssLoader.push('css-hot-loader');
+    function getBaseCssLoaders () {
+        const baseCssLoader = [VueStyleLoader(), CSSLoader(), PostCSSLoader()];
+        if (!isProd) {
+            baseCssLoader.unshift('css-hot-loader');
+        }
+        return baseCssLoader;
     }
-    if (opts.extractCssLoader) {
-        baseCssLoader.push(MiniCssExtractPlugin.loader);
-    }
-
+    
     const config = {
         mode: isProd ? 'production' : 'development',
         devtool: isProd ? false : 'cheap-module-eval-source-map', // nosources-source-map
@@ -119,11 +118,11 @@ function getConfig (chunks, options) {
                 },
                 {
                     test: /\.css$/,
-                    use: (isProd ? [] : ['css-hot-loader']).concat([VueStyleLoader(), CSSLoader(), PostCSSLoader()]),
+                    use: getBaseCssLoaders().concat([]),
                 },
                 {
                     test: /\.(stylus|styl)$/,
-                    use: (isProd ? [] : ['css-hot-loader']).concat([VueStyleLoader(), CSSLoader(), PostCSSLoader(), StylusLoader()]),
+                    use: getBaseCssLoaders().concat([StylusLoader()]),
                 },
                 {
                     test: /\.(png|jpg|jpeg|gif|eot|ttf|woff|woff2|svg|svgz)(\?.+)?$/,
@@ -158,10 +157,9 @@ function getConfig (chunks, options) {
 
 
 function getSSRConfig (chunks) {
-    const config = getConfig(chunks, {
-        extractCssLoader: true,
-    });
+    const config = getConfig(chunks);
 
+    // 使页面的顶部有vue ssr预渲染的style标签
     config.plugins.push(new MiniCssExtractPlugin({
         filename: '[name].css',
         chunkFilename: '[id].css',
