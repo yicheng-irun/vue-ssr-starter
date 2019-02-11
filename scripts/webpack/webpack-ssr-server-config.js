@@ -1,5 +1,4 @@
 
-const path = require('path');
 const webpackMerge = require('webpack-merge');
 const webpackBaseConfig = require('./webpack-base-config.js');
 const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
@@ -10,14 +9,14 @@ const { srcRoot, distBundleRoot } = utils.configs;
 
 const isProd = process.env.NODE_ENV == 'production';
 
-function getConfig (chunk) {
+function getConfig () {
 
-    const config = webpackMerge(webpackBaseConfig.getSSRConfig('Server ' + chunk), {
+    const config = webpackMerge(webpackBaseConfig.getSSRConfig('Server'), {
         entry: {
-            [chunk]: `${srcRoot}/pages/${chunk}/entry-server.js`,
+            main: `${srcRoot}/entry-server.js`,
         },
         output: {
-            path: `${distBundleRoot}/${chunk}`,
+            path: `${distBundleRoot}/`,
             filename: 'assets/[name].js',
             libraryTarget: 'commonjs2',
             publicPath: '/'
@@ -28,7 +27,7 @@ function getConfig (chunk) {
             }),
             new HtmlWebpackPlugin({
                 filename: 'template.html',
-                template: path.join(srcRoot, `pages/${chunk}/index.html`),
+                template: `${srcRoot}/template.html`,
                 // chunks: [chunk],
                 
                 // inject: false,

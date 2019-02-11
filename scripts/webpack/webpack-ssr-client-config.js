@@ -11,28 +11,28 @@ const { srcRoot, distRoot, distBundleRoot } = utils.configs;
 const isProd = process.env.NODE_ENV == 'production';
 
 
-function getConfig (chunk) {
+function getConfig () {
 
-    const config = webpackMerge(webpackBaseConfig.getSSRConfig('Client ' + chunk), {
+    const config = webpackMerge(webpackBaseConfig.getSSRConfig('Client'), {
         entry: {
-            app: `${srcRoot}/pages/${chunk}/entry-client.js`,
+            main: `${srcRoot}/entry-client.js`,
         },
         output: {
             path: distRoot,
-            filename:`assets/${chunk}/[name].js`,
+            filename:'assets/[name].js',
             publicPath: '/'
         },
         plugins: [
             new VueSSRClientPlugin({
                 filename: path.relative(
                     distRoot,
-                    path.resolve(distBundleRoot, `./${chunk}/vue-ssr-client-manifest.json`),
+                    path.resolve(distBundleRoot, './vue-ssr-client-manifest.json'),
                 )
             }),
             new HtmlWebpackPlugin({
-                filename: `${chunk}.html`,
-                template: `${srcRoot}/pages/${chunk}/index.html`,
-                chunks: [chunk],
+                filename: 'template.html',
+                template: `${srcRoot}/template.html`,
+                chunks: ['main'],
                 
                 // inject: false,
                 minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,

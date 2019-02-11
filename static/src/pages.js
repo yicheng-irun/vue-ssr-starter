@@ -1,5 +1,5 @@
 
-export default pages = {
+const pages = {
     page1: () => {
         return import(/* webpackChunkName: "page1" */'./pages/page1');
     },
@@ -9,3 +9,5 @@ export default pages = {
 };
 
 pages.default = pages.page1;
+
+export default pages;

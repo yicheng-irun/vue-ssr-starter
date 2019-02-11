@@ -4,21 +4,15 @@ const router = express.Router();
 // 这里加上鉴权相关的代码逻辑
 
 router.get('/', (req, res) => {
-    res.ssrRender('home', {
+    res.ssrRender('page1', {
         query: req.query
     });
 });
 
-router.get('/demos/base', (req, res) => {
-    res.ssrRender('demos/base', {
-        query: req.query
-    });
-});
-
-router.get('/demos/multi', (req, res) => {
-    res.ssrRender('demos/multi-page', {
+router.get('/template', (req, res) => {
+    res.ssrRender(req.query.page, {
         query: req.query,
-    }, req.query.page);
+    });
 });
 
 

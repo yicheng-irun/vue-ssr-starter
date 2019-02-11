@@ -1,5 +1,5 @@
 const path = require('path');
-const glob = require('glob');
+// const glob = require('glob');
 
 let buildSettings = {};
 try {
@@ -20,18 +20,18 @@ const configs = {
     devNodeServerPort: buildSettings.devNodeServerPort || 10001, // 在开发模式下，后台监听的端口
 };
 
-function getAllStaticPages () {
-    const pages = glob.sync(`${configs.srcRoot}/pages/**/index.html`).map(page => page.replace(/^.*src\/pages\/(.*)\/index.html$/, '$1'));
-    return pages;
-}
+// function getAllStaticPages () {
+//     const pages = glob.sync(`${configs.srcRoot}/pages/**/index.html`).map(page => page.replace(/^.*src\/pages\/(.*)\/index.html$/, '$1'));
+//     return pages;
+// }
 
-function getAllSSRPages () {
-    const pages = glob.sync(`${configs.srcRoot}/pages-ssr/**/index.html`).map(page => page.replace(/^.*src\/pages-ssr\/(.*)\/index.html$/, '$1'));
-    return pages;
-}
+// function getAllSSRPages () {
+//     const pages = glob.sync(`${configs.srcRoot}/pages-ssr/**/index.html`).map(page => page.replace(/^.*src\/pages-ssr\/(.*)\/index.html$/, '$1'));
+//     return pages;
+// }
 
 module.exports = {
     configs,
-    getAllStaticPages,
-    getAllSSRPages,
+    // getAllStaticPages,
+    // getAllSSRPages,
 };

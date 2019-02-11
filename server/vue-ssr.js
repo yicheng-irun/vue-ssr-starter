@@ -18,8 +18,8 @@ function getRouter (options) {
             return cachedRenderers[pagePath];
         }
 
-        const jsonPath = path.join(bundlePath, pagePath, 'vue-ssr-server-bundle.json');
-        const templatePath = path.join(bundlePath, pagePath, 'template.html');
+        const jsonPath = path.join(bundlePath, 'vue-ssr-server-bundle.json');
+        const templatePath = path.join(bundlePath, 'template.html');
         if (!fs.existsSync(jsonPath)) {
             throw new Error(`file: '${jsonPath}' is not exists`);
         }
@@ -52,13 +52,13 @@ function getRouter (options) {
          */
         const serverOrigin = `http://127.0.0.1:${options.app.get('port')}`;
 
-        res.ssrRender = function (pagePath, params, page) {
+        res.ssrRender = function (pagePath, params) {
             const renderer = getRenderer(pagePath);
             const context = {
                 req,
                 params,
                 serverOrigin,
-                page,
+                page: pagePath
             };
             renderer.renderToString(context, (err, html) => {
                 if (err) {
