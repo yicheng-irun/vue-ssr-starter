@@ -52,12 +52,13 @@ function getRouter (options) {
          */
         const serverOrigin = `http://127.0.0.1:${options.app.get('port')}`;
 
-        res.ssrRender = function (pagePath, params) {
+        res.ssrRender = function (pagePath, params, page) {
             const renderer = getRenderer(pagePath);
             const context = {
                 req,
                 params,
                 serverOrigin,
+                page,
             };
             renderer.renderToString(context, (err, html) => {
                 if (err) {

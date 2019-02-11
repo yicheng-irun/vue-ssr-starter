@@ -7,7 +7,8 @@ module.exports = {
     },
     "extends": [
         "eslint:recommended",
-        "plugin:vue/recommended"
+        "plugin:vue/recommended",
+        // "plugin:import",
     ],
     "parserOptions": {
         "sourceType": "module"

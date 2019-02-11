@@ -1,10 +1,10 @@
 {
   "publicPath": "/",
   "all": [
-    "assets/demos/base.js"
+    "assets/demos/base/app.js"
   ],
   "initial": [
-    "assets/demos/base.js"
+    "assets/demos/base/app.js"
   ],
   "async": [],
   "modules": {

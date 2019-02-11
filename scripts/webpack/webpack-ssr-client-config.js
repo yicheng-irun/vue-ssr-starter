@@ -15,11 +15,11 @@ function getConfig (chunk) {
 
     const config = webpackMerge(webpackBaseConfig.getSSRConfig('Client ' + chunk), {
         entry: {
-            [chunk]: `${srcRoot}/pages/${chunk}/entry-client.js`,
+            app: `${srcRoot}/pages/${chunk}/entry-client.js`,
         },
         output: {
             path: distRoot,
-            filename:'assets/[name].js',
+            filename:`assets/${chunk}/[name].js`,
             publicPath: '/'
         },
         plugins: [

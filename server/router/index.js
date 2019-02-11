@@ -15,6 +15,11 @@ router.get('/demos/base', (req, res) => {
     });
 });
 
+router.get('/demos/multi', (req, res) => {
+    res.ssrRender('demos/multi-page', {
+        query: req.query,
+    }, req.query.page);
+});
 
 
 module.exports = {
