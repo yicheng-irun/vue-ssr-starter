@@ -4,7 +4,7 @@
     "assets/main.js",
     "assets/page1.js",
     "assets/page2.js",
-    "assets/vendors~page1~page2.js"
+    "assets/vendor.js"
   ],
   "initial": [
     "assets/main.js"
@@ -12,7 +12,7 @@
   "async": [
     "assets/page1.js",
     "assets/page2.js",
-    "assets/vendors~page1~page2.js"
+    "assets/vendor.js"
   ],
   "modules": {
     "6a466b5a": [
