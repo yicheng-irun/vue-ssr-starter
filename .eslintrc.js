@@ -1,20 +1,23 @@
 module.exports = {
-    "env": {
+    env: {
         "browser": true,
         "commonjs": true,
         "es6": true,
         "node": true
     },
-    "extends": [
+    extends: [
         "eslint:recommended",
         "plugin:vue/recommended",
         // "plugin:import",
     ],
-    "parserOptions": {
-        "sourceType": "module"
+    parserOptions: {
+        parser: "babel-eslint",
+        sourceType: "module"
     },
-    plugins: [],
-    "rules": {
+    plugins: [
+        'vue'
+    ],
+    rules: {
         "indent": [
             "error",
             4
