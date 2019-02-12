@@ -139,6 +139,10 @@ function getConfig (chunks) {
             ],
         },
         optimization: {
+            splitChunks: {
+                chunks: 'async',
+                name: 'vendor',
+            }
         },
         plugins: [
             new VueLoaderPlugin(),
@@ -195,7 +199,7 @@ function getChildPluginInstances (options = {}) {
 
 
 module.exports = {
-    getConfig,
+    getConfig,  
     getSSRConfig,
     getChildPluginInstances,
 };
