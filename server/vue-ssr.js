@@ -11,6 +11,26 @@ function getRouter (options) {
 
     const cachedRenderers = {};
 
+    let cachedBundle = null;
+    /**
+     * 获取bundle
+     */
+    function getBundle () {
+        if (cachedBundle) {
+            return cachedBundle;
+        }
+
+        const jsonPath = path.join(bundlePath, 'vue-ssr-server-bundle.json');
+        if (!fs.existsSync(jsonPath)) {
+            throw new Error(`file: '${jsonPath}' is not exists`);
+        }
+        const serverBundle = JSON.parse(fs.readFileSync(jsonPath).toString());
+        if (options.cacheRenderer) {
+            cachedBundle = serverBundle;
+        }
+        return serverBundle;
+    }
+
     function getRenderer (pagePathArg) {
         const pagePath = pagePathArg.replace(/^\/+/, '');
 
@@ -18,16 +38,16 @@ function getRouter (options) {
             return cachedRenderers[pagePath];
         }
 
-        const jsonPath = path.join(bundlePath, 'vue-ssr-server-bundle.json');
-        const templatePath = path.join(bundlePath, 'template.html');
-        if (!fs.existsSync(jsonPath)) {
-            throw new Error(`file: '${jsonPath}' is not exists`);
-        }
-        if (!fs.existsSync(templatePath)) {
+        let templatePath = path.join(bundlePath, 'template.html');
+
+        const custTemplatePath = path.join(bundlePath, 'templates', `${pagePath}.html`);
+        if (fs.existsSync(custTemplatePath)) {
+            templatePath = custTemplatePath;
+        } else if (!fs.existsSync(templatePath)) {
             throw new Error(`file: '${templatePath}' is not exists`);
         }
 
-        const serverBundle = JSON.parse(fs.readFileSync(jsonPath).toString());
+        const serverBundle = getBundle();
         const template = fs.readFileSync(templatePath).toString();
         
         const renderer = vueServerRender.createBundleRenderer(serverBundle, {

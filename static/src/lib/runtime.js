@@ -21,11 +21,12 @@ const runtime = {
 
     clientInit () {
         let page = '';
-        window.location.search.replace(/[&?]page=([^&]+)/, (a, b) => {
-            page = b;
-        });
         if (window._SSR_PAGE_) {
             page = window._SSR_PAGE_;
+        } else {
+            window.location.search.replace(/[&?]page=([^&]+)/, (a, b) => {
+                page = b;
+            });
         }
         runtime.page = page;
     },
