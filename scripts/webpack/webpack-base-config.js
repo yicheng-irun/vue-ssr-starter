@@ -181,7 +181,7 @@ function getChildPluginInstances (options = {}) {
         plugins.push(new HtmlWebpackPlugin({
             filename: `templates/${chunk}.html`,
             template: `${srcRoot}/pages/${chunk}/template.html`,
-            chunks: ['main'],
+            // chunks: ['main'],
             
             // inject: false,
             minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,
