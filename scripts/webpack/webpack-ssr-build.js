@@ -37,8 +37,6 @@ if (isProd) {
         noInfo: true,
         hot: true,
         allowedHosts: [
-            'www.xiwnn.com',
-            'xiwnn.com',
         ],
         open: false,
         openPage: 'index.html',
