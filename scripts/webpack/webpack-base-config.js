@@ -3,6 +3,7 @@ const path = require('path');
 const { VueLoaderPlugin } = require('vue-loader');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const utils = require('../utils');
 
 const { srcRoot } = utils.configs;
@@ -168,7 +169,33 @@ function getSSRConfig (chunks) {
     return config;
 }
 
+
+function getChildPluginInstances (options = {}) {
+    const plugins = [];
+    const templatesChunks = utils.getAllPageTemplates();
+    templatesChunks.forEach((chunk) => {
+        plugins.push(new HtmlWebpackPlugin({
+            filename: `templates/${chunk}.html`,
+            template: `${srcRoot}/pages/${chunk}/template.html`,
+            chunks: ['main'],
+            
+            // inject: false,
+            minify: isProd ? { collapseWhitespace: true, minifyJS: true } : false,
+
+            page: chunk,
+            isProd: isProd,
+            isDev: !isProd,
+            isServer: false,
+            isClient: true,
+            ...options,
+        }));
+    });
+    return plugins;
+}
+
+
 module.exports = {
     getConfig,
     getSSRConfig,
+    getChildPluginInstances,
 };

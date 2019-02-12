@@ -38,6 +38,10 @@ function getConfig () {
                 isServer: true,
                 isClient: false,
             }),
+            ...webpackBaseConfig.getChildPluginInstances({
+                isServer: true,
+                isClient: false
+            }),
         ],
         target: 'node',
         watch: !isProd,

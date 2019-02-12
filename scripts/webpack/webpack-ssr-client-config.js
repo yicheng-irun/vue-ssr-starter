@@ -42,6 +42,7 @@ function getConfig () {
                 isServer: false,
                 isClient: true,
             }),
+            ...webpackBaseConfig.getChildPluginInstances(),
         ],
         watch: !isProd,
     });
