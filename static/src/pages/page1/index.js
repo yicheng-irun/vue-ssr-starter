@@ -1,9 +1,7 @@
 import App from './app.vue';
-import createStore from './store';
+import Store from './store';
 
-export default function () {
-    return {
-        App,
-        store: createStore(),
-    };
-}
+export default {
+    App,
+    Store,
+};

@@ -5,7 +5,7 @@ Vue.use(Vuex);
 import { get } from '@/lib/ajax.js';
 
 
-export default function createStore () {
+export default function () {
     const store = new Vuex.Store({
         state: {
             data: {

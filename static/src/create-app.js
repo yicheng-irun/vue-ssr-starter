@@ -12,7 +12,8 @@ export default function createApp () {
         }
 
         f().then((factfunc) => {
-            const {App, store} = factfunc.default();
+            const {App, Store} = factfunc.default;
+            const store = Store();
             const app = new Vue({
                 store: store.instance,
                 render: h => h(App),
