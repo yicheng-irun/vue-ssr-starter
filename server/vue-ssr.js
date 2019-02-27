@@ -82,7 +82,7 @@ function getRouter (options) {
             };
             renderer.renderToString(context, (err, html) => {
                 if (err) {
-                    return next(err);
+                    return req.next(err);
                 }
                 // 处理异常……
                 res.end(html);
