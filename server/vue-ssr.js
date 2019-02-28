@@ -74,13 +74,22 @@ function getRouter (options) {
 
         res.ssrRender = function (pagePath, params) {
             const renderer = getRenderer(pagePath || '');
+            let ignoreByNext = false;
             const context = {
                 req,
+                res,
+                next () {
+                    ignoreByNext = true;
+                    req.next();
+                },
                 params,
                 serverOrigin,
                 page: pagePath
             };
             renderer.renderToString(context, (err, html) => {
+                if (ignoreByNext) {
+                    return;
+                }
                 if (err) {
                     return req.next(err);
                 }

@@ -7,16 +7,40 @@ const runtime = {
 
     serverOrigin: '',
 
-    req: {},
-    params: {},
+    action: {
+        req: {},
+        res: {},
+        next: () => {},
+        params: {},
+    },
     page: '',
 
     // 仅在服务端运行
     setServerContext (context) {
-        runtime.serverOrigin = context.serverOrigin;
-        runtime.req = context.req || {};
-        runtime.params = context.params || {};
-        runtime.page = context.page;
+        const {
+            req,
+            res,
+            next,
+            serverOrigin,
+            page,
+            params,
+        } = context;
+
+        runtime.serverOrigin = serverOrigin;
+
+        if (req) {
+            runtime.action.req = req;
+        }
+        if (res) {
+            runtime.action.res = res;
+        }
+        if (next) {
+            runtime.action.next = next;
+        }
+        if (params) {
+            runtime.action.params = params;
+        }
+        runtime.page = page;
     },
 
     clientInit () {
@@ -28,6 +52,7 @@ const runtime = {
                 page = b;
             });
         }
+        runtime.serverOrigin = location.origin;
         runtime.page = page;
     },
 };
