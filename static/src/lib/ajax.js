@@ -1,38 +1,47 @@
 import axios from 'axios';
 import runtime from './runtime';
-import urlLib from 'url';
+// import urlLib from 'url';
 
-function parseUrl (url) {
+export function createAxios () {
     if (runtime.isServer) {
-        const result = urlLib.resolve(runtime.serverOrigin, url);
-        return result;
-    }
-    return url;
-}
+        const instance = axios.create({
+            // add headers to server side requests
+            headers: {
+                ...runtime.action.req.headers,
+                accept: '*/*',
+            },
 
-/**
- * add headers to server side requests
- */
-function getHeaders () {
-    if (runtime.isServer) {
-        return {
-            ...runtime.action.req.headers,
-            accept: '*/*',
-        };
+            baseURL: runtime.serverOrigin,
+        });
+        instance.interceptors.response.use(function (response) {
+            /**
+             * throw the 'set-cookie' of the ajax response header to action response header
+             */
+            let newSetCookie = response.headers && response.headers['set-cookie'];
+            if (newSetCookie) {
+                const oldSetCookie = runtime.action.res.getHeader('set-cookie') || [];
+                if (!Array.isArray(newSetCookie)) {
+                    newSetCookie = [newSetCookie];
+                }
+                runtime.action.res.setHeader('set-cookie', newSetCookie.concat(oldSetCookie));
+            }
+            return response;
+        }, function (error) {
+            return Promise.reject(error);
+        });
+        return instance;
     }
-    return undefined;
+    return axios.create();
 }
 
 export function get (url, params) {
-    return axios.get(parseUrl(url), {
+    return createAxios().get(url, {
         params,
-        headers: getHeaders(),
     });
 }
 
 export function post (url, data, params) {
-    return axios.post(parseUrl(url), data, {
+    return createAxios().post(url, data, {
         params,
-        headers: getHeaders(),
     });
 }

@@ -8,7 +8,14 @@ const router = express.Router();
 
 
 router.get('/demo', (req, res) => {
-    console.log(req.headers);
+    const testCookie = `${Date.now()}`;
+    res.cookie('testCookie', testCookie, {
+        maxAge: 1000 * 60,
+    });
+    res.cookie('testCookie2', testCookie, {
+        maxAge: 1000 * 60,
+    });
+    // res.getHeader('')
     res.json({
         success: true,
         msg: 'success',
@@ -17,6 +24,7 @@ router.get('/demo', (req, res) => {
             time: new Date().toLocaleString(),
             query: req.query,
             cookie: req.cookies,
+            testCookie,
         }
     });
 });
