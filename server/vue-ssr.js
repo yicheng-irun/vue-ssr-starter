@@ -78,9 +78,9 @@ function getRouter (options) {
             const context = {
                 req,
                 res,
-                next () {
+                next (...args) {
                     ignoreByNext = true;
-                    req.next();
+                    req.next(...args);
                 },
                 params,
                 serverOrigin,

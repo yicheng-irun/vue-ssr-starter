@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 import { get } from '@/lib/ajax.js';
+import runtime from '@/lib/runtime.js';
 
 
 export default function () {
@@ -38,6 +39,7 @@ export default function () {
 
     return {
         serverFetch () { // 服务端 拉取数据
+            // runtime.action.next();
             return store.dispatch('fetchItem');
         },
         clientFetch () { // 客户端 拉取数据

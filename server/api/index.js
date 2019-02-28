@@ -8,13 +8,15 @@ const router = express.Router();
 
 
 router.get('/demo', (req, res) => {
+    console.log(req.headers);
     res.json({
         success: true,
         msg: 'success',
         data: {
             hello: 'world!',
             time: new Date().toLocaleString(),
-            query: req.query
+            query: req.query,
+            cookie: req.cookies,
         }
     });
 });

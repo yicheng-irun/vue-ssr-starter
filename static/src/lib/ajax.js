@@ -10,10 +10,29 @@ function parseUrl (url) {
     return url;
 }
 
-export function get (url, params) {
-    return axios.get(parseUrl(url), { params });
+/**
+ * add headers to server side requests
+ */
+function getHeaders () {
+    if (runtime.isServer) {
+        return {
+            ...runtime.action.req.headers,
+            accept: '*/*',
+        };
+    }
+    return undefined;
 }
 
-export function post (url, data) {
-    return axios.post(parseUrl(url), data);
+export function get (url, params) {
+    return axios.get(parseUrl(url), {
+        params,
+        headers: getHeaders(),
+    });
+}
+
+export function post (url, data, params) {
+    return axios.post(parseUrl(url), data, {
+        params,
+        headers: getHeaders(),
+    });
 }
