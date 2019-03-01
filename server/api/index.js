@@ -15,7 +15,6 @@ router.get('/demo', (req, res) => {
     res.cookie('testCookie2', testCookie, {
         maxAge: 1000 * 60,
     });
-    // res.getHeader('')
     res.json({
         success: true,
         msg: 'success',
