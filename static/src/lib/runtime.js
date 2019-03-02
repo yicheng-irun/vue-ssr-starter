@@ -1,3 +1,4 @@
+import Url from 'url';
 
 const runtime = {
     isServer: false,
@@ -14,6 +15,7 @@ const runtime = {
         params: {},
     },
     page: '',
+    query: {},
 
     // 仅在服务端运行
     setServerContext (context) {
@@ -30,6 +32,7 @@ const runtime = {
 
         if (req) {
             runtime.action.req = req;
+            runtime.query = req.query;
         }
         if (res) {
             runtime.action.res = res;
@@ -44,16 +47,16 @@ const runtime = {
     },
 
     clientInit () {
-        let page = '';
-        if (window._SSR_PAGE_) {
-            page = window._SSR_PAGE_;
-        } else {
-            window.location.search.replace(/[&?]_page=([^&]+)/, (a, b) => {
-                page = b;
-            });
-        }
+        const loc = Url.parse(location.href, true);
         runtime.serverOrigin = location.origin;
-        runtime.page = page;
+        
+        runtime.query = loc.query;
+
+        if (window._SSR_PAGE_) {
+            runtime.page = window._SSR_PAGE_;
+        } else {
+            runtime.page = runtime.query._page;
+        }
     },
 };
 
