@@ -48,7 +48,7 @@ const runtime = {
         if (window._SSR_PAGE_) {
             page = window._SSR_PAGE_;
         } else {
-            window.location.search.replace(/[&?]page=([^&]+)/, (a, b) => {
+            window.location.search.replace(/[&?]_page=([^&]+)/, (a, b) => {
                 page = b;
             });
         }

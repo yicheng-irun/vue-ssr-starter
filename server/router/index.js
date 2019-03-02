@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/template', (req, res) => {
-    res.ssrRender(req.query.page, {
+    res.ssrRender(req.query._page, {
         query: req.query,
     });
 });
