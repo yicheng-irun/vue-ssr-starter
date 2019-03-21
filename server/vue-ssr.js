@@ -9,6 +9,26 @@ function getRouter (options) {
         throw new Error('options.bundlePath "' + bundlePath + '" is not available');
     }
 
+    const CACHE = {
+        map: {},
+        timeMap: {},
+        set (key, value, time) {
+            this.map[key] = value;
+            let t = parseInt(time || 0) || 0;
+            this.timeMap[key] = Date.now() + t;
+        },
+        get (key) {
+            const now = Date.now();
+            if (this.map[key]) {
+                const t = parseFloat(this.timeMap[key]);
+                if (t > now) {
+                    return Promise.resolve(this.map[key]);
+                }
+            }
+            return Promise.resolve(null);
+        }
+    };
+
     const cachedRenderers = {};
 
     let cachedBundle = null;
@@ -72,30 +92,56 @@ function getRouter (options) {
          */
         const serverOrigin = `http://127.0.0.1:${options.app.get('port')}`;
 
-        res.ssrRender = function (pagePath, params) {
-            const renderer = getRenderer(pagePath || '');
-            let ignoreByNext = false;
-            const context = {
-                req,
-                res,
-                next (...args) {
-                    ignoreByNext = true;
-                    req.next(...args);
-                },
-                params,
-                serverOrigin,
-                page: pagePath
-            };
-            renderer.renderToString(context, (err, html) => {
-                if (ignoreByNext) {
-                    return;
-                }
-                if (err) {
-                    return req.next(err);
-                }
-                // 处理异常……
-                res.end(html);
-            });
+        res.ssrRender = function (pagePath, params, cacheOptions) {
+            let useCache = false;
+            let cacheKey = '';
+            let cacheTime = 0;
+            if (cacheOptions) {
+                useCache = true;
+                cacheKey = cacheOptions.key || '';
+                cacheTime = cacheOptions.time || 1000 * 60; // 默认缓存1分钟
+            }
+
+            const key = `${pagePath}::${cacheKey}`;
+
+            function render () {
+                const renderer = getRenderer(pagePath || '');
+                let ignoreByNext = false;
+                const context = {
+                    req,
+                    res,
+                    next (...args) {
+                        ignoreByNext = true;
+                        req.next(...args);
+                    },
+                    params,
+                    serverOrigin,
+                    page: pagePath
+                };
+                renderer.renderToString(context, (err, html) => {
+                    if (ignoreByNext) {
+                        return;
+                    }
+                    if (err) {
+                        return req.next(err);
+                    }
+                    res.end(html);
+                    if (useCache) {
+                        CACHE.set(key, html, cacheTime);
+                    }
+                });
+            }
+            
+            if (useCache) {
+                CACHE.get(key, cacheTime).then((result) => {
+                    if (result) {
+                        return res.end(result);
+                    }
+                    render();
+                }).catch(next);
+            } else {
+                render();
+            }
         };
         next();
     }
