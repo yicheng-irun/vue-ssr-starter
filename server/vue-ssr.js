@@ -92,7 +92,7 @@ function getRouter (options) {
          */
         const serverOrigin = `http://127.0.0.1:${options.app.get('port')}`;
 
-        res.ssrRender = function (pagePath, params, cacheOptions) {
+        res.ssrRender = function (pagePath, params = {}, cacheOptions) {
             let useCache = false;
             let cacheKey = '';
             let cacheTime = 0;
