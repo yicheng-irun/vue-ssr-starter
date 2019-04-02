@@ -4,15 +4,11 @@
 import createApp from './create-app';
 import runtime from '@/lib/runtime';
 
-export default (context) => {
+export default async (context) => {
     runtime.setServerContext(context);
 
-    return new Promise((resolve, reject) => {
-        createApp(runtime.page).then(({ app, store }) => {
-            store.serverFetch().then(() => {
-                context.state = store.instance.state; // 这一步将会把状态序列化到 `window.__INITIAL_STATE__`
-                resolve(app);
-            }).catch(reject);
-        }).catch(reject);
-    });
+    const { app, store } = await createApp(runtime.page);
+    await store.serverFetch();
+    context.state = store.instance.state; // 这一步将会把状态序列化到 `window.__INITIAL_STATE__`
+    return app;
 };
